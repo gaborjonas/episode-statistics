@@ -6,7 +6,6 @@ namespace App\Infrastructure\Episode\Persistence\Doctrine\Projector;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\Episode\Projection\EpisodeDownload;
-use DateMalformedStringException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

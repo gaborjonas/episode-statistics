@@ -24,8 +24,8 @@ final class EpisodeDownloadTest extends TestCase
             occurredAt: $occurredAt,
         );
 
-        self::assertSame($episodeId->toString(), $download->episodeId);
-        self::assertSame($podcastId->toString(), $download->podcastId);
-        self::assertSame($occurredAt, $download->occurredAt);
+        $this->assertSame($episodeId->toString(), $download->episodeId);
+        $this->assertSame($podcastId->toString(), $download->podcastId);
+        $this->assertSame($occurredAt, $download->occurredAt);
     }
 }

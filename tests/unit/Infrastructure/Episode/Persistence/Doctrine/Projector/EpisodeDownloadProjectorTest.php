@@ -35,11 +35,11 @@ final class EpisodeDownloadProjectorTest extends TestCase
             occurredAt: new DateTimeImmutable('2024-03-15T10:00:00+00:00'),
         );
 
-        $this->em->expects(self::once())
+        $this->em->expects($this->once())
             ->method('persist')
-            ->with(self::isInstanceOf(EpisodeDownload::class));
+            ->with($this->isInstanceOf(EpisodeDownload::class));
 
-        $this->em->expects(self::once())->method('flush');
+        $this->em->expects($this->once())->method('flush');
 
         ($this->projector)($event);
     }

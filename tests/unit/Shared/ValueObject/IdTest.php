@@ -6,6 +6,7 @@ namespace App\Tests\unit\Shared\ValueObject;
 
 use App\Shared\ValueObject\EventId;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 final class IdTest extends TestCase
 {
@@ -14,7 +15,7 @@ final class IdTest extends TestCase
     public function test_rejects_uuid_with_leading_garbage(): void
     {
         // kills mutant: removing ^ anchor lets "xxx-<uuid>" match
-        $this->expectException(\Throwable::class);
+        $this->expectException(Throwable::class);
 
         EventId::fromString('xxx-' . self::VALID_UUID);
     }
@@ -22,7 +23,7 @@ final class IdTest extends TestCase
     public function test_rejects_uuid_with_trailing_garbage(): void
     {
         // kills mutant: removing $ anchor lets "<uuid>-extra" match
-        $this->expectException(\Throwable::class);
+        $this->expectException(Throwable::class);
 
         EventId::fromString(self::VALID_UUID . '-extra');
     }
@@ -34,6 +35,6 @@ final class IdTest extends TestCase
 
         $id = EventId::fromString($upper);
 
-        self::assertSame($upper, $id->toString());
+        $this->assertSame($upper, $id->toString());
     }
 }

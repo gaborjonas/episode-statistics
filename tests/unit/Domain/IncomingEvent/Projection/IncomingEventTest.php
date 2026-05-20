@@ -20,10 +20,10 @@ final class IncomingEventTest extends TestCase
 
         $event = IncomingEvent::create($id, $type, $occurredAt, $data, $createdAt);
 
-        self::assertSame($id, $event->id);
-        self::assertSame($type, $event->type);
-        self::assertSame($occurredAt, $event->occurredAt);
-        self::assertSame($data, $event->data);
-        self::assertSame($createdAt, $event->createdAt);
+        $this->assertSame($id, $event->id);
+        $this->assertSame($type, $event->type);
+        $this->assertSame($occurredAt, $event->occurredAt);
+        $this->assertSame($data, $event->data);
+        $this->assertSame($createdAt, $event->createdAt);
     }
 }

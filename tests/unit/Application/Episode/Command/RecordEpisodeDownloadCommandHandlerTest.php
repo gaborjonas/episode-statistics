@@ -34,9 +34,9 @@ final class RecordEpisodeDownloadCommandHandlerTest extends TestCase
     {
         $command = $this->makeCommand();
 
-        $this->repository->expects(self::once())->method('exists')->with($command->eventId)->willReturn(true);
-        $this->repository->expects(self::never())->method('append');
-        $this->eventBus->expects(self::never())->method('dispatch');
+        $this->repository->expects($this->once())->method('exists')->with($command->eventId)->willReturn(true);
+        $this->repository->expects($this->never())->method('append');
+        $this->eventBus->expects($this->never())->method('dispatch');
 
         ($this->handler)($command);
     }
@@ -45,15 +45,15 @@ final class RecordEpisodeDownloadCommandHandlerTest extends TestCase
     {
         $command = $this->makeCommand();
 
-        $this->repository->expects(self::once())->method('exists')->willReturn(false);
-        $this->repository->expects(self::once())
+        $this->repository->expects($this->once())->method('exists')->willReturn(false);
+        $this->repository->expects($this->once())
             ->method('append')
-            ->with(self::callback(static function (IncomingEvent $event) use ($command): bool {
+            ->with($this->callback(static function (IncomingEvent $event) use ($command): bool {
                 return $event->id   === $command->eventId
                     && $event->type === $command->type
                     && $event->data === $command->data;
             }));
-        $this->eventBus->expects(self::once())->method('dispatch');
+        $this->eventBus->expects($this->once())->method('dispatch');
 
         ($this->handler)($command);
     }
@@ -62,11 +62,11 @@ final class RecordEpisodeDownloadCommandHandlerTest extends TestCase
     {
         $command = $this->makeCommand();
 
-        $this->repository->expects(self::once())->method('exists')->willReturn(false);
-        $this->repository->expects(self::once())->method('append');
-        $this->eventBus->expects(self::once())
+        $this->repository->expects($this->once())->method('exists')->willReturn(false);
+        $this->repository->expects($this->once())->method('append');
+        $this->eventBus->expects($this->once())
             ->method('dispatch')
-            ->with(self::callback(static function (EpisodeDownloadRecorded $event) use ($command): bool {
+            ->with($this->callback(static function (EpisodeDownloadRecorded $event) use ($command): bool {
                 return $event->eventId->toString()   === $command->eventId
                     && $event->episodeId->toString() === $command->data['episode_id']
                     && $event->podcastId->toString() === $command->data['podcast_id'];

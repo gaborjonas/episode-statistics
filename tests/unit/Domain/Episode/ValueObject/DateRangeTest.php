@@ -7,6 +7,7 @@ namespace App\Tests\unit\Domain\Episode\ValueObject;
 use App\Domain\Episode\ValueObject\DateRange;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 final class DateRangeTest extends TestCase
 {
@@ -17,8 +18,8 @@ final class DateRangeTest extends TestCase
 
         $range = new DateRange($from, $to);
 
-        self::assertSame($from, $range->from);
-        self::assertSame($to, $range->to);
+        $this->assertSame($from, $range->from);
+        $this->assertSame($to, $range->to);
     }
 
     public function test_same_day_from_and_to_is_valid(): void
@@ -27,7 +28,7 @@ final class DateRangeTest extends TestCase
 
         $range = new DateRange($day, $day);
 
-        self::assertSame($day, $range->from);
+        $this->assertSame($day, $range->from);
     }
 
     public function test_exactly_365_days_is_valid(): void
@@ -37,12 +38,12 @@ final class DateRangeTest extends TestCase
 
         $range = new DateRange($from, $to);
 
-        self::assertSame($from, $range->from);
+        $this->assertSame($from, $range->from);
     }
 
     public function test_throws_when_from_exceeds_to(): void
     {
-        $this->expectException(\Throwable::class);
+        $this->expectException(Throwable::class);
 
         new DateRange(
             new DateTimeImmutable('2024-02-01'),
@@ -52,7 +53,7 @@ final class DateRangeTest extends TestCase
 
     public function test_throws_when_range_exceeds_365_days(): void
     {
-        $this->expectException(\Throwable::class);
+        $this->expectException(Throwable::class);
 
         new DateRange(
             new DateTimeImmutable('2024-01-01'),

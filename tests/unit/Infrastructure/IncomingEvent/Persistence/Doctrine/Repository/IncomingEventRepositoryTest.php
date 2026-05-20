@@ -26,22 +26,22 @@ final class IncomingEventRepositoryTest extends TestCase
     {
         $entity = IncomingEvent::create('id-1', 'type', new DateTimeImmutable(), [], new DateTimeImmutable());
 
-        $this->em->expects(self::once())
+        $this->em->expects($this->once())
             ->method('find')
             ->with(IncomingEvent::class, 'id-1')
             ->willReturn($entity);
 
-        self::assertTrue($this->repository->exists('id-1'));
+        $this->assertTrue($this->repository->exists('id-1'));
     }
 
     public function test_exists_returns_false_when_entity_not_found(): void
     {
-        $this->em->expects(self::once())
+        $this->em->expects($this->once())
             ->method('find')
             ->with(IncomingEvent::class, 'id-missing')
             ->willReturn(null);
 
-        self::assertFalse($this->repository->exists('id-missing'));
+        $this->assertFalse($this->repository->exists('id-missing'));
     }
 
     public function test_append_persists_and_flushes(): void
@@ -54,8 +54,8 @@ final class IncomingEventRepositoryTest extends TestCase
             new DateTimeImmutable(),
         );
 
-        $this->em->expects(self::once())->method('persist')->with($event);
-        $this->em->expects(self::once())->method('flush');
+        $this->em->expects($this->once())->method('persist')->with($event);
+        $this->em->expects($this->once())->method('flush');
 
         $this->repository->append($event);
     }
