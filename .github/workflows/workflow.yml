@@ -4,9 +4,9 @@ on:
     push:
 
 jobs:
-    ci:
+    checks:
+        name: Code checks
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v4
 

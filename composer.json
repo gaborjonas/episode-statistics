@@ -1,8 +1,6 @@
 {
     "name": "symfony/skeleton",
     "type": "project",
-    "minimum-stability": "stable",
-    "prefer-stable": true,
     "require": {
         "php": ">=8.5.6",
         "ext-ctype": "*",
@@ -13,44 +11,34 @@
         "nelmio/api-doc-bundle": "^5.10.2",
         "phpdocumentor/reflection-docblock": "^6.0.3",
         "phpstan/phpdoc-parser": "^2.3.2",
-        "symfony/asset": "8.0.*",
-        "symfony/console": "8.0.*",
-        "symfony/doctrine-messenger": "8.0.*",
-        "symfony/dotenv": "8.0.*",
+        "symfony/asset": "~8.0.0",
+        "symfony/console": "~8.0.0",
+        "symfony/doctrine-messenger": "~8.0.0",
+        "symfony/dotenv": "~8.0.0",
         "symfony/flex": "^2.10",
-        "symfony/framework-bundle": "8.0.*",
-        "symfony/messenger": "8.0.*",
+        "symfony/framework-bundle": "~8.0.0",
+        "symfony/messenger": "~8.0.0",
         "symfony/monolog-bundle": "^4.0.2",
-        "symfony/property-access": "8.0.*",
-        "symfony/property-info": "8.0.*",
-        "symfony/runtime": "8.0.*",
-        "symfony/serializer": "8.0.*",
-        "symfony/twig-bundle": "8.0.*",
-        "symfony/uid": "8.0.*",
-        "symfony/validator": "8.0.*",
-        "symfony/yaml": "8.0.*",
-        "twig/extra-bundle": "^2.12|^3.24",
-        "twig/twig": "^2.12|^3.26"
+        "symfony/property-access": "~8.0.0",
+        "symfony/property-info": "~8.0.0",
+        "symfony/runtime": "~8.0.0",
+        "symfony/serializer": "~8.0.0",
+        "symfony/twig-bundle": "~8.0.0",
+        "symfony/uid": "~8.0.0",
+        "symfony/validator": "~8.0.0",
+        "symfony/yaml": "~8.0.0",
+        "twig/extra-bundle": "^2.12 || ^3.24",
+        "twig/twig": "^2.12 || ^3.26"
     },
-    "config": {
-        "allow-plugins": {
-            "infection/extension-installer": true,
-            "php-http/discovery": true,
-            "symfony/flex": true,
-            "symfony/runtime": true
-        },
-        "bump-after-update": true,
-        "sort-packages": true
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\Tests\\": "tests/"
-        }
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95.2",
+        "infection/infection": "^0.33.2",
+        "phpstan/phpstan": "^2.1.55",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^13.1",
+        "symfony/browser-kit": "~8.0.0",
+        "symfony/css-selector": "~8.0.0",
+        "symfony/maker-bundle": "^1.67"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -65,41 +53,53 @@
         "symfony/polyfill-php84": "*",
         "symfony/polyfill-php85": "*"
     },
-    "scripts": {
-        "stan": "vendor/bin/phpstan --memory-limit=-1",
-        "lint": "vendor/bin/php-cs-fixer fix -vv",
-        "check": "vendor/bin/php-cs-fixer check",
-        "test": "XDEBUG_MODE=coverage phpunit",
-        "mutation": "infection",
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
         },
+        "bump-after-update": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "docker": true,
+            "require": "8.0.*"
+        }
+    },
+    "scripts": {
         "post-install-cmd": [
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "8.0.*",
-            "docker": true
-        }
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.95.2",
-        "infection/infection": "^0.33.2",
-        "phpstan/phpstan": "^2.1.55",
-        "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^13.1",
-        "symfony/browser-kit": "8.0.*",
-        "symfony/css-selector": "8.0.*",
-        "symfony/maker-bundle": "^1.67"
+        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "lint": "vendor/bin/php-cs-fixer fix -vv",
+        "lint:check": "vendor/bin/php-cs-fixer check",
+        "mutation": "infection",
+        "stan": "vendor/bin/phpstan --memory-limit=-1",
+        "test": "XDEBUG_MODE=coverage phpunit"
     }
 }
