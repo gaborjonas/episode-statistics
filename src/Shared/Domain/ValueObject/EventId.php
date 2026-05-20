@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\ValueObject;
+namespace App\Shared\Domain\ValueObject;
 
-use App\Shared\Exception\InvalidEventIdException;
+use App\Shared\Domain\Exception\InvalidEventIdException;
 
 final class EventId extends Id
 {

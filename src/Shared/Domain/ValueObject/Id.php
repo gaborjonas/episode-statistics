@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\ValueObject;
+namespace App\Shared\Domain\ValueObject;
 
 abstract class Id
 {

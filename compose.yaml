@@ -23,6 +23,20 @@ services:
         published: 443
         protocol: udp
 
+  messenger-consumer:
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: localhost, php:80
+      DEFAULT_URI: https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-15}&charset=${POSTGRES_CHARSET:-utf8}
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    command:
+      - php
+      - bin/console
+      - messenger:consume
+      - -vv
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:18.4
@@ -38,8 +52,6 @@ services:
       start_period: 60s
     volumes:
       - database_data:/var/lib/postgresql:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
     ports:
       - name: postgres
         target: 5432

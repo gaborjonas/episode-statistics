@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\ValueObject;
+namespace App\Shared\Domain\ValueObject;
 
-use App\Shared\Exception\InvalidEpisodeIdException;
+use App\Shared\Domain\Exception\InvalidEpisodeIdException;
 
 final class EpisodeId extends Id
 {

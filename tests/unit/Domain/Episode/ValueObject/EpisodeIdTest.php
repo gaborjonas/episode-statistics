@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Domain\Episode\ValueObject;
 
-use App\Shared\Exception\InvalidEpisodeIdException;
-use App\Shared\ValueObject\EpisodeId;
+use App\Shared\Domain\Exception\InvalidEpisodeIdException;
+use App\Shared\Domain\ValueObject\EpisodeId;
 use PHPUnit\Framework\TestCase;
 
 final class EpisodeIdTest extends TestCase

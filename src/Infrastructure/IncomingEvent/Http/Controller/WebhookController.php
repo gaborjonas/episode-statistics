@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Episode\Http\Controller;
+namespace App\Infrastructure\IncomingEvent\Http\Controller;
 
-use App\Application\Episode\Command\RecordEpisodeDownloadCommand\RecordEpisodeDownloadCommand;
-use App\Infrastructure\Episode\Http\Request\WebHookRequest;
+use App\Application\IncomingEvent\Command\RecordIncomingEventCommand;
+use App\Infrastructure\IncomingEvent\Http\Request\WebHookRequest;
 use App\Shared\Domain\Bus\CommandBus;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -55,17 +55,15 @@ final readonly class WebhookController
     public function __invoke(
         #[MapRequestPayload] WebHookRequest $request,
     ): JsonResponse {
-        if ($request->type === 'episode.downloaded') {
-            $this->commandBus->dispatch(
-                new RecordEpisodeDownloadCommand(
-                    eventId: $request->eventId,
-                    type: $request->type,
-                    occurredAt: $request->occurredAt,
-                    data: $request->data,
-                    createdAt: new DateTimeImmutable()->format(DateTimeInterface::ATOM),
-                ),
-            );
-        }
+        $command = new RecordIncomingEventCommand(
+            eventId: $request->eventId,
+            type: $request->type,
+            occurredAt: $request->occurredAt,
+            data: $request->data,
+            createdAt: new DateTimeImmutable()->format(DateTimeInterface::ATOM),
+        );
+
+        $this->commandBus->dispatch($command);
 
         return new JsonResponse([
             'message' => 'Request accepted.',

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\ValueObject;
+namespace App\Shared\Domain\ValueObject;
 
-use App\Shared\Exception\InvalidPodcastIdException;
+use App\Shared\Domain\Exception\InvalidPodcastIdException;
 
 final class PodcastId extends Id
 {

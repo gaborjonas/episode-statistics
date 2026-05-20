@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Episode\Event;
 
 use App\Shared\Domain\Event\DomainEvent;
-use App\Shared\ValueObject\EpisodeId;
-use App\Shared\ValueObject\EventId;
-use App\Shared\ValueObject\PodcastId;
+use App\Shared\Domain\ValueObject\EpisodeId;
+use App\Shared\Domain\ValueObject\EventId;
+use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 
 final readonly class EpisodeDownloadRecorded implements DomainEvent

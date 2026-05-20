@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\unit\Domain\Episode\Projection;
 
 use App\Domain\Episode\Projection\EpisodeDownload;
-use App\Shared\ValueObject\EpisodeId;
-use App\Shared\ValueObject\PodcastId;
+use App\Shared\Domain\ValueObject\EpisodeId;
+use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 

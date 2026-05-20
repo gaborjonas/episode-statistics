@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Episode\ValueObject;
 
-use App\Domain\Download\Exception\InvalidDateRangeException;
+use App\Domain\Episode\Exception\InvalidDateRangeException;
 use DateTimeImmutable;
 
 final readonly class DateRange

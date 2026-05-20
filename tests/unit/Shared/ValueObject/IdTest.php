@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Shared\ValueObject;
 
-use App\Shared\ValueObject\EventId;
+use App\Shared\Domain\ValueObject\EventId;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 

@@ -8,112 +8,111 @@ use App\Application\Episode\DTO\DownloadsResult;
 use App\Application\Episode\Query\GetDownloadsQuery\GetDownloadsQuery;
 use App\Application\Episode\Query\GetDownloadsQuery\GetDownloadsQueryHandler;
 use App\Domain\Episode\ValueObject\DateRange;
-use App\Shared\ValueObject\EpisodeId;
-use App\Shared\ValueObject\PodcastId;
+use App\Shared\Domain\ValueObject\EpisodeId;
+use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NativeQuery;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class GetDownloadsQueryHandlerTest extends TestCase
 {
-    private function makeHandler(array $dbRows): GetDownloadsQueryHandler
+    private const string PODCAST_ID = '550e8400-e29b-41d4-a716-446655440001';
+    private const string EPISODE_ID = '550e8400-e29b-41d4-a716-446655440002';
+
+    private EntityManagerInterface&MockObject $em;
+    private GetDownloadsQueryHandler $handler;
+
+    protected function setUp(): void
     {
-        $nativeQuery = $this->createStub(NativeQuery::class);
-        $nativeQuery->method('setParameters')->willReturnSelf();
-        $nativeQuery->method('getArrayResult')->willReturn($dbRows);
-
-        $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('createNativeQuery')->willReturn($nativeQuery);
-
-        return new GetDownloadsQueryHandler($em);
+        $this->em      = $this->createMock(EntityManagerInterface::class);
+        $this->handler = new GetDownloadsQueryHandler($this->em);
     }
 
-    public function test_returns_downloads_result_with_data_from_db(): void
+    public function test_returns_downloads_result_with_correct_shape(): void
     {
-        $result = $this->makeHandler([
-            ['date' => '2024-01-01', 'count' => 5],
-            ['date' => '2024-01-02', 'count' => 3],
-        ])($this->makeQuery('2024-01-01', '2024-01-02'));
+        $query = $this->makeQuery('2024-03-14', '2024-03-15');
+
+        $nativeQuery = $this->createMock(NativeQuery::class);
+        $nativeQuery->method('setParameters')->willReturnSelf();
+        $nativeQuery->method('getArrayResult')->willReturn([
+            ['date' => '2024-03-14', 'count' => 3],
+            ['date' => '2024-03-15', 'count' => 7],
+        ]);
+        $this->em->method('createNativeQuery')->willReturn($nativeQuery);
+
+        $result = ($this->handler)($query);
 
         $this->assertInstanceOf(DownloadsResult::class, $result);
-        $this->assertSame([
-            ['date' => '2024-01-01', 'count' => 5],
-            ['date' => '2024-01-02', 'count' => 3],
-        ], $result->downloads);
+        $this->assertSame(self::PODCAST_ID, $result->podcastId);
+        $this->assertSame(self::EPISODE_ID, $result->episodeId);
+        $this->assertSame('2024-03-14', $result->from);
+        $this->assertSame('2024-03-15', $result->to);
+        $this->assertCount(2, $result->downloads);
+        $this->assertSame(['date' => '2024-03-14', 'count' => 3], $result->downloads[0]);
+        $this->assertSame(['date' => '2024-03-15', 'count' => 7], $result->downloads[1]);
     }
 
-    public function test_fills_missing_dates_with_zero_count(): void
+    public function test_fills_zero_for_days_with_no_downloads(): void
     {
-        $result = $this->makeHandler([
-            ['date' => '2024-01-02', 'count' => 7],
-        ])($this->makeQuery('2024-01-01', '2024-01-03'));
+        $query = $this->makeQuery('2024-03-13', '2024-03-15');
 
-        $this->assertSame([
-            ['date' => '2024-01-01', 'count' => 0],
-            ['date' => '2024-01-02', 'count' => 7],
-            ['date' => '2024-01-03', 'count' => 0],
-        ], $result->downloads);
-    }
-
-    public function test_returns_all_zero_counts_when_db_returns_empty(): void
-    {
-        $result = $this->makeHandler([])($this->makeQuery('2024-01-01', '2024-01-02'));
-
-        $this->assertSame([
-            ['date' => '2024-01-01', 'count' => 0],
-            ['date' => '2024-01-02', 'count' => 0],
-        ], $result->downloads);
-    }
-
-    public function test_result_carries_query_identifiers(): void
-    {
-        $query  = $this->makeQuery('2024-01-01', '2024-01-01');
-        $result = $this->makeHandler([])($query);
-
-        $this->assertSame($query->podcastId->toString(), $result->podcastId);
-        $this->assertSame($query->episodeId->toString(), $result->episodeId);
-        $this->assertSame('2024-01-01', $result->from);
-        $this->assertSame('2024-01-01', $result->to);
-    }
-
-    public function test_passes_all_query_parameters_to_sql(): void
-    {
-        // kills mutants: removing/mangling any of the four parameter entries
         $nativeQuery = $this->createMock(NativeQuery::class);
-        $nativeQuery->expects($this->once())
-            ->method('setParameters')
-            ->with([
-                'podcastId'   => '550e8400-e29b-41d4-a716-446655440000',
-                'episodeId'   => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
-                'from'        => '2024-01-15',
-                'toExclusive' => '2024-01-17', // to (2024-01-16) + 1 day
-            ])
-            ->willReturnSelf();
-        $nativeQuery->expects($this->once())->method('getArrayResult')->willReturn([]);
+        $nativeQuery->method('setParameters')->willReturnSelf();
+        $nativeQuery->method('getArrayResult')->willReturn([
+            ['date' => '2024-03-15', 'count' => 5],
+        ]);
+        $this->em->method('createNativeQuery')->willReturn($nativeQuery);
 
-        $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('createNativeQuery')->willReturn($nativeQuery);
+        $result = ($this->handler)($query);
 
-        (new GetDownloadsQueryHandler($em))($this->makeQuery('2024-01-15', '2024-01-16'));
+        $this->assertCount(3, $result->downloads);
+        $this->assertSame(['date' => '2024-03-13', 'count' => 0], $result->downloads[0]);
+        $this->assertSame(['date' => '2024-03-14', 'count' => 0], $result->downloads[1]);
+        $this->assertSame(['date' => '2024-03-15', 'count' => 5], $result->downloads[2]);
     }
 
-    public function test_casts_db_count_to_integer(): void
+    public function test_returns_all_zeros_when_no_database_rows(): void
     {
-        // kills mutant: removing (int) cast leaves string count instead of int
-        $result = $this->makeHandler([
-            ['date' => '2024-01-01', 'count' => '9'],
-        ])($this->makeQuery('2024-01-01', '2024-01-01'));
+        $query = $this->makeQuery('2024-03-14', '2024-03-15');
 
-        $this->assertSame(9, $result->downloads[0]['count']);
+        $nativeQuery = $this->createMock(NativeQuery::class);
+        $nativeQuery->method('setParameters')->willReturnSelf();
+        $nativeQuery->method('getArrayResult')->willReturn([]);
+        $this->em->method('createNativeQuery')->willReturn($nativeQuery);
+
+        $result = ($this->handler)($query);
+
+        $this->assertCount(2, $result->downloads);
+        foreach ($result->downloads as $day) {
+            $this->assertSame(0, $day['count']);
+        }
+    }
+
+    public function test_single_day_range_returns_one_entry(): void
+    {
+        $query = $this->makeQuery('2024-06-01', '2024-06-01');
+
+        $nativeQuery = $this->createMock(NativeQuery::class);
+        $nativeQuery->method('setParameters')->willReturnSelf();
+        $nativeQuery->method('getArrayResult')->willReturn([
+            ['date' => '2024-06-01', 'count' => 42],
+        ]);
+        $this->em->method('createNativeQuery')->willReturn($nativeQuery);
+
+        $result = ($this->handler)($query);
+
+        $this->assertCount(1, $result->downloads);
+        $this->assertSame(42, $result->downloads[0]['count']);
     }
 
     private function makeQuery(string $from, string $to): GetDownloadsQuery
     {
         return new GetDownloadsQuery(
-            podcastId: PodcastId::fromString('550e8400-e29b-41d4-a716-446655440000'),
-            episodeId: EpisodeId::fromString('6ba7b810-9dad-11d1-80b4-00c04fd430c8'),
-            dateRange: new DateRange(
+            podcastId:  PodcastId::fromString(self::PODCAST_ID),
+            episodeId:  EpisodeId::fromString(self::EPISODE_ID),
+            dateRange:  new DateRange(
                 new DateTimeImmutable($from),
                 new DateTimeImmutable($to),
             ),

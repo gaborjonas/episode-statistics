@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Episode\Command\RecordEpisodeDownloadCommand;
+namespace App\Application\IncomingEvent\Command;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
 use App\Shared\Domain\Bus\EventBusInterface;
-use App\Shared\ValueObject\EpisodeId;
-use App\Shared\ValueObject\EventId;
-use App\Shared\ValueObject\PodcastId;
+use App\Shared\Domain\ValueObject\EpisodeId;
+use App\Shared\Domain\ValueObject\EventId;
+use App\Shared\Domain\ValueObject\PodcastId;
 use DateMalformedStringException;
 use DateTimeImmutable;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class RecordEpisodeDownloadCommandHandler
+final readonly class RecordIncomingEventCommandHandler
 {
     public function __construct(
         private IncomingEventRepositoryInterface $eventStoreRepository,
@@ -26,7 +26,7 @@ final readonly class RecordEpisodeDownloadCommandHandler
     /**
      * @throws DateMalformedStringException
      */
-    public function __invoke(RecordEpisodeDownloadCommand $command): void
+    public function __invoke(RecordIncomingEventCommand $command): void
     {
         // use the event_id as idempotency key to avoid duplicate processing
         if ($this->eventStoreRepository->exists($command->eventId)) {
@@ -43,13 +43,15 @@ final readonly class RecordEpisodeDownloadCommandHandler
             ),
         );
 
-        $this->eventBus->dispatch(
-            new EpisodeDownloadRecorded(
-                eventId: EventId::fromString($command->eventId),
-                episodeId: EpisodeId::fromString($command->data['episode_id']),
-                podcastId: PodcastId::fromString($command->data['podcast_id']),
-                occurredAt: new DateTimeImmutable($command->occurredAt),
-            ),
-        );
+        if ($command->type === 'episode.downloaded') {
+            $this->eventBus->dispatch(
+                new EpisodeDownloadRecorded(
+                    eventId: EventId::fromString($command->eventId),
+                    episodeId: EpisodeId::fromString($command->data['episode_id']),
+                    podcastId: PodcastId::fromString($command->data['podcast_id']),
+                    occurredAt: new DateTimeImmutable($command->occurredAt),
+                ),
+            );
+        }
     }
 }

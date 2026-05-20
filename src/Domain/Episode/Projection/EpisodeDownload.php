@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Episode\Projection;
 
-use App\Shared\ValueObject\EpisodeId;
-use App\Shared\ValueObject\PodcastId;
+use App\Shared\Domain\ValueObject\EpisodeId;
+use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 
 final class EpisodeDownload
@@ -14,9 +14,7 @@ final class EpisodeDownload
     private(set) string $episodeId;
     private(set) string $podcastId;
     private(set) DateTimeImmutable $occurredAt;
-
     private function __construct() {}
-
     public static function create(
         EpisodeId $episodeId,
         PodcastId $podcastId,

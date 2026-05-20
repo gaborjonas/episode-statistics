@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Episode\Command\RecordEpisodeDownloadCommand;
+namespace App\Application\IncomingEvent\Command;
 
 use App\Shared\Domain\Bus\Command;
 
-final readonly class RecordEpisodeDownloadCommand implements Command
-{
+final readonly class RecordIncomingEventCommand implements Command {
+
     /**
      * @param array<string,mixed> $data
      */
@@ -17,5 +17,7 @@ final readonly class RecordEpisodeDownloadCommand implements Command
         public string $occurredAt,
         public array $data,
         public string $createdAt,
-    ) {}
+    ) {
+
+    }
 }
