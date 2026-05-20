@@ -1,0 +1,41 @@
+name: Code checks
+
+on:
+    push:
+
+jobs:
+    ci:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.5'
+                  extensions: bcmath, uuid
+                  coverage: xdebug
+                  tools: composer
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: vendor
+                  key: composer-${{ hashFiles('composer.lock') }}
+                  restore-keys: composer-
+
+            - name: Install dependencies
+              run: composer install --prefer-dist --no-interaction --no-progress
+
+            - name: Coding Standards
+              run: composer lint:check
+
+            - name: Static Analysis
+              run: composer stan
+
+            - name: Unit and Feature Tests
+              run: composer test
+
+            - name: Mutation Tests
+              run: composer mutation

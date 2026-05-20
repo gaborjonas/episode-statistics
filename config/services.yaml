@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            Symfony\Component\Messenger\MessageBusInterface $commandBus: '@command.bus'
+            Symfony\Component\Messenger\MessageBusInterface $queryBus: '@query.bus'
+            Symfony\Component\Messenger\MessageBusInterface $eventBus: '@event.bus'
+
+    App\:
+        resource: '../src/'
+
+    App\Shared\Domain\Bus\CommandBus:
+        alias: App\Shared\Infrastructure\Bus\MessengerCommandBus
+
+    App\Shared\Domain\Bus\QueryBus:
+        alias: App\Shared\Infrastructure\Bus\MessengerQueryBus
+
+    App\Shared\Domain\Bus\EventBus:
+        alias: MessengerEventBusInterface

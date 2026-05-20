@@ -1,0 +1,23 @@
+framework:
+    messenger:
+        default_bus: command.bus
+
+        buses:
+            command.bus:
+                middleware:
+                    - doctrine_transaction
+            query.bus: ~
+            event.bus: ~
+
+        transports:
+            # Run: php bin/console messenger:setup-transports
+            async:
+                dsn: 'doctrine://default'
+                options:
+                    table_name: messenger_messages
+            sync: 'sync://'
+
+        routing:
+            App\Shared\Domain\Bus\Query: sync
+            App\Shared\Domain\Bus\Command: async
+            App\Shared\Domain\Event\DomainEvent: async

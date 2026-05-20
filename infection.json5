@@ -1,0 +1,15 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src"
+        ],
+        "excludes": [
+            "Infrastructure/Episode/Http/Controller",
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "staticAnalysisTool": "phpstan"
+}

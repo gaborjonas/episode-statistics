@@ -1,0 +1,31 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Podcast Statistics API
+            description: >
+                Receives episode download webhook events and exposes time-series
+                download data for front-end charts.
+            version: 1.0.0
+        components:
+            schemas:
+                DailyCount:
+                    type: object
+                    properties:
+                        date:
+                            type: string
+                            format: date
+                            example: '2026-05-19'
+                        count:
+                            type: integer
+                            minimum: 0
+                            example: 42
+                Error:
+                    type: object
+                    properties:
+                        error:
+                            type: string
+                            example: 'data.episode_id must be a valid UUID'
+    areas:
+        path_patterns:
+            - ^/webhook
+            - ^/podcasts
