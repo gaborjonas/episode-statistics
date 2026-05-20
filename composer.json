@@ -100,6 +100,6 @@
         "lint:check": "vendor/bin/php-cs-fixer check",
         "mutation": "infection",
         "stan": "vendor/bin/phpstan --memory-limit=-1",
-        "test": "XDEBUG_MODE=coverage phpunit"
+        "test": "XDEBUG_MODE=coverage phpunit --coverage-text"
     }
 }
