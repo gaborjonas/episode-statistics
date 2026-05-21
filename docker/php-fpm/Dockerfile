@@ -16,7 +16,8 @@ RUN install-php-extensions \
     ctype \
     iconv \
     mbstring \
-    pdo_pgsql
+    pdo_pgsql \
+    amqp
 
 EXPOSE 9000
 

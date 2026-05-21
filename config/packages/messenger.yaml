@@ -6,16 +6,11 @@ framework:
             command.bus:
                 middleware:
                     - validation
-                    - doctrine_transaction
             query.bus: ~
             event.bus: ~
 
         transports:
-            # Run: php bin/console messenger:setup-transports
-            async:
-                dsn: 'doctrine://default'
-                options:
-                    table_name: messenger_messages
+            async: '%env(MESSENGER_TRANSPORT_DSN)%'
             sync: 'sync://'
 
         routing:
