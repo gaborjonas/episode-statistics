@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\IncomingEvent\Http\Request;
 
+use DateTimeInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,7 +21,7 @@ final readonly class WebHookRequest
         #[Assert\Uuid]
         #[SerializedName('event_id')]
         public string $eventId,
-        #[Assert\DateTime]
+        #[Assert\DateTime(format: DateTimeInterface::ATOM)]
         #[Assert\NotBlank]
         #[SerializedName('occurred_at')]
         public string $occurredAt,

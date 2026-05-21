@@ -44,14 +44,14 @@ final readonly class DownloadsController
             new OA\Parameter(
                 name: 'from', in: 'query', required: false, schema: new OA\Schema(
                 type: 'string',
-                format: 'date',
+                format: 'datetime',
                 example: '2026-05-13',
             ),
             ),
             new OA\Parameter(
                 name: 'to', in: 'query', required: false, schema: new OA\Schema(
                 type: 'string',
-                format: 'date',
+                format: 'datetime',
                 example: '2026-05-19',
             ),
             ),

@@ -97,6 +97,20 @@ final class GetDownloadsQueryHandlerTest extends TestCase
         $this->assertSame(42, $result->downloads[0]['count']);
     }
 
+    #[Test]
+    public function count_is_cast_to_int_when_repository_returns_string(): void
+    {
+        $query = $this->makeQuery('2024-03-14', '2024-03-14');
+
+        $this->repository->method('countByDate')->willReturn([
+            '2024-03-14' => '9',
+        ]);
+
+        $result = ($this->handler)($query);
+
+        $this->assertSame(9, $result->downloads[0]['count']);
+    }
+
     private function makeQuery(string $from, string $to): GetDownloadsQuery
     {
         return new GetDownloadsQuery(

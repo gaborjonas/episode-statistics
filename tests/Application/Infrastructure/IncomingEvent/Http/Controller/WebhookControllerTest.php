@@ -15,7 +15,7 @@ final class WebhookControllerTest extends WebTestCase
     private const string EVENT_ID    = '550e8400-e29b-41d4-a716-446655440000';
     private const string PODCAST_ID  = '550e8400-e29b-41d4-a716-446655440001';
     private const string EPISODE_ID  = '550e8400-e29b-41d4-a716-446655440002';
-    private const string OCCURRED_AT = '2024-03-14 12:00:00';
+    private const string OCCURRED_AT = '2024-03-14T12:00:00+00:00';
 
     private CommandBus&MockObject $commandBus;
 

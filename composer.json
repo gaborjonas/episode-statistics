@@ -97,6 +97,13 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
+        "check": [
+            "@lint",
+            "@stan",
+            "@test",
+            "@mutation"
+
+        ],
         "lint": "vendor/bin/php-cs-fixer fix -vv",
         "lint:check": "vendor/bin/php-cs-fixer check",
         "mutation": "infection",
