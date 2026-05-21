@@ -29,14 +29,13 @@ ARG GROUP_ID=1000
 RUN groupadd -g ${GROUP_ID} devuser && \
     useradd -l -u ${USER_ID} -g devuser -m devuser
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 RUN install-php-extensions xdebug
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-COPY xdebug.ini "$PHP_INI_DIR/conf.d/xdebug.ini"
 
-COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY docker/php-fpm/xdebug.ini "$PHP_INI_DIR/conf.d/xdebug.ini"
+COPY --chmod=0755 /docker/php-fpm/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN chown devuser:devuser /var/www/html
 USER devuser
@@ -60,12 +59,10 @@ FROM base AS prod
 
 COPY . .
 COPY --from=builder /var/www/html/vendor ./vendor
+COPY ./docker/php-fpm/opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
+COPY --chmod=0755 ./docker/php-fpm/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY docker/prod/opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
-
-COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
 RUN rm /usr/local/bin/install-php-extensions /var/www/html/composer.json
 
 ENTRYPOINT ["docker-entrypoint.sh"]

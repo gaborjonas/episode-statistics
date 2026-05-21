@@ -22,8 +22,8 @@ services:
       postgres:
         condition: service_healthy
     build:
-      context: ./docker/php-fpm
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
       target: dev
     volumes:
       - '.:/var/www/html'
@@ -43,8 +43,8 @@ services:
       php-fpm:
         condition: service_healthy
     build:
-      context: ./docker/php-fpm
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
       target: dev
     volumes:
       - '.:/var/www/html'

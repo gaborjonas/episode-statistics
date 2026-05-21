@@ -1,0 +1,12 @@
+services:
+  php-fpm:
+    environment:
+      - APP_ENV=prod
+    build:
+      target: prod
+
+  worker:
+    environment:
+      - APP_ENV=prod
+    build:
+      target: prod
