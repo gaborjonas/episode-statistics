@@ -6,11 +6,13 @@ namespace App\Tests\unit\Domain\IncomingEvent\Projection;
 
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class IncomingEventTest extends TestCase
 {
-    public function test_create_sets_all_properties(): void
+    #[Test]
+    public function create_sets_all_properties(): void
     {
         $id         = 'abc12345-0000-0000-0000-000000000001';
         $type       = 'episode.download';

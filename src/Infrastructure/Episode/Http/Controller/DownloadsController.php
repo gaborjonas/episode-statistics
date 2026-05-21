@@ -6,7 +6,7 @@ namespace App\Infrastructure\Episode\Http\Controller;
 
 use App\Application\Episode\DTO\DownloadsResult;
 use App\Application\Episode\Query\GetDownloadsQuery\GetDownloadsQuery;
-use App\Infrastructure\Episode\Http\Request\DownloadsQueryRequest;
+use App\Infrastructure\Episode\Http\Request\DownloadsRequest;
 use App\Shared\Domain\Bus\QueryBus;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\PodcastId;
@@ -73,7 +73,7 @@ final readonly class DownloadsController
     public function __invoke(
         string $podcastId,
         string $episodeId,
-        #[MapQueryString] DownloadsQueryRequest $query = new DownloadsQueryRequest(),
+        #[MapQueryString] DownloadsRequest $query = new DownloadsRequest(),
     ): JsonResponse {
         $podcast = PodcastId::fromString($podcastId);
         $episode = EpisodeId::fromString($episodeId);

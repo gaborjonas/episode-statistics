@@ -13,8 +13,4 @@ final class InvalidDateRangeException extends DomainException
         return new self('"from" must not be after "to"');
     }
 
-    public static function exceedsMaxRange(int $days): self
-    {
-        return new self(sprintf('Date range must not exceed %d days', $days));
-    }
 }

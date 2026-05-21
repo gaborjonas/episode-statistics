@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\unit\Application\IncomingEvent;
 
 use App\Application\IncomingEvent\Command\RecordIncomingEventCommand;
 use App\Application\IncomingEvent\Command\RecordIncomingEventCommandHandler;
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
+use App\Domain\IncomingEvent\Enum\EventType;
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
 use App\Shared\Domain\Bus\EventBusInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RecordIncomingEventCommandHandlerTest extends TestCase
+final class RecordIncomingEventCommandHandlerTest extends TestCase
 {
     private const string EVENT_ID = '550e8400-e29b-41d4-a716-446655440001';
     private const string EPISODE_ID = '550e8400-e29b-41d4-a716-446655440002';
@@ -28,7 +32,8 @@ class RecordIncomingEventCommandHandlerTest extends TestCase
         $this->handler = new RecordIncomingEventCommandHandler($this->repository, $this->eventBus);
     }
 
-    public function test_skips_processing_when_event_already_exists(): void
+    #[Test]
+    public function skips_processing_when_event_already_exists(): void
     {
         $command = $this->makeCommand();
 
@@ -39,7 +44,8 @@ class RecordIncomingEventCommandHandlerTest extends TestCase
         ($this->handler)($command);
     }
 
-    public function test_appends_incoming_event_when_new(): void
+    #[Test]
+    public function appends_incoming_event_when_new(): void
     {
         $command = $this->makeCommand();
 
@@ -59,7 +65,8 @@ class RecordIncomingEventCommandHandlerTest extends TestCase
         ($this->handler)($command);
     }
 
-    public function test_dispatches_episode_download_recorded_event(): void
+    #[Test]
+    public function dispatches_episode_download_recorded_event(): void
     {
         $command = $this->makeCommand();
 
@@ -79,14 +86,14 @@ class RecordIncomingEventCommandHandlerTest extends TestCase
         ($this->handler)($command);
     }
 
-    public function test_does_not_dispatch_event_for_unknown_type(): void
+    #[Test]
+    public function does_not_dispatch_event_for_unknown_type(): void
     {
         $command = new RecordIncomingEventCommand(
             eventId: self::EVENT_ID,
             type: 'some.other.event',
             occurredAt: '2024-03-15T10:00:00+00:00',
             data: [],
-            createdAt: '2024-03-15T10:01:00+00:00',
         );
 
         $this->repository->expects($this->once())->method('exists')->willReturn(false);
@@ -100,10 +107,9 @@ class RecordIncomingEventCommandHandlerTest extends TestCase
     {
         return new RecordIncomingEventCommand(
             eventId: self::EVENT_ID,
-            type: 'episode.downloaded',
+            type: EventType::EpisodeDownloaded->value,
             occurredAt: '2024-03-15T10:00:00+00:00',
             data: ['episode_id' => self::EPISODE_ID, 'podcast_id' => self::PODCAST_ID],
-            createdAt: '2024-03-15T10:01:00+00:00',
         );
     }
 }

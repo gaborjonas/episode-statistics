@@ -7,44 +7,49 @@ namespace App\Tests\unit\Infrastructure\IncomingEvent\Persistence\Doctrine\Repos
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Infrastructure\IncomingEvent\Persistence\Doctrine\Repository\IncomingEventRepository;
 use DateTimeImmutable;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class IncomingEventRepositoryTest extends TestCase
 {
     private EntityManagerInterface&MockObject $em;
-    private IncomingEventRepository $repository;
 
     protected function setUp(): void
     {
-        $this->em         = $this->createMock(EntityManagerInterface::class);
-        $this->repository = new IncomingEventRepository($this->em);
+        $this->em = $this->createMock(EntityManagerInterface::class);
     }
 
-    public function test_exists_returns_true_when_entity_found(): void
+    #[Test]
+    public function exists_returns_true_when_row_found(): void
     {
-        $entity = IncomingEvent::create('id-1', 'type', new DateTimeImmutable(), [], new DateTimeImmutable());
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->once())
+            ->method('fetchOne')
+            ->with('SELECT 1 FROM incoming_events WHERE id = :id', ['id' => 'id-1'])
+            ->willReturn('1');
+        $this->em->expects($this->once())->method('getConnection')->willReturn($connection);
 
-        $this->em->expects($this->once())
-            ->method('find')
-            ->with(IncomingEvent::class, 'id-1')
-            ->willReturn($entity);
-
-        $this->assertTrue($this->repository->exists('id-1'));
+        $this->assertTrue((new IncomingEventRepository($this->em))->exists('id-1'));
     }
 
-    public function test_exists_returns_false_when_entity_not_found(): void
+    #[Test]
+    public function exists_returns_false_when_row_not_found(): void
     {
-        $this->em->expects($this->once())
-            ->method('find')
-            ->with(IncomingEvent::class, 'id-missing')
-            ->willReturn(null);
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->once())
+            ->method('fetchOne')
+            ->with('SELECT 1 FROM incoming_events WHERE id = :id', ['id' => 'id-missing'])
+            ->willReturn(false);
+        $this->em->expects($this->once())->method('getConnection')->willReturn($connection);
 
-        $this->assertFalse($this->repository->exists('id-missing'));
+        $this->assertFalse((new IncomingEventRepository($this->em))->exists('id-missing'));
     }
 
-    public function test_append_persists_and_flushes(): void
+    #[Test]
+    public function append_persists_and_flushes(): void
     {
         $event = IncomingEvent::create(
             'id-1',
@@ -57,6 +62,6 @@ final class IncomingEventRepositoryTest extends TestCase
         $this->em->expects($this->once())->method('persist')->with($event);
         $this->em->expects($this->once())->method('flush');
 
-        $this->repository->append($event);
+        (new IncomingEventRepository($this->em))->append($event);
     }
 }
