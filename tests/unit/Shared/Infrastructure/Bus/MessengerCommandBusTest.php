@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\unit\Shared\Infrastructure\Bus;
 
 use App\Shared\Infrastructure\Bus\MessengerCommandBus;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -22,7 +23,8 @@ final class MessengerCommandBusTest extends TestCase
         $this->commandBus = new MessengerCommandBus($this->messageBus);
     }
 
-    public function test_delegates_dispatch_to_messenger_bus(): void
+    #[Test]
+    public function delegates_dispatch_to_messenger_bus(): void
     {
         $command = new stdClass();
 

@@ -30,6 +30,7 @@ final readonly class WebHookRequest
                 'podcast_id' => new Assert\Uuid,
             ],
         )]
+        #[SerializedName('data')]
         public array $data,
     ) {}
 }

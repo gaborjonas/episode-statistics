@@ -7,8 +7,6 @@ namespace App\Infrastructure\IncomingEvent\Http\Controller;
 use App\Application\IncomingEvent\Command\RecordIncomingEventCommand;
 use App\Infrastructure\IncomingEvent\Http\Request\WebHookRequest;
 use App\Shared\Domain\Bus\CommandBus;
-use DateTimeImmutable;
-use DateTimeInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +58,6 @@ final readonly class WebhookController
             type: $request->type,
             occurredAt: $request->occurredAt,
             data: $request->data,
-            createdAt: new DateTimeImmutable()->format(DateTimeInterface::ATOM),
         );
 
         $this->commandBus->dispatch($command);

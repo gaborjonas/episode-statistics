@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\IncomingEvent\Command;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
+use App\Domain\IncomingEvent\Enum\EventType;
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
 use App\Shared\Domain\Bus\EventBusInterface;
@@ -33,23 +34,25 @@ final readonly class RecordIncomingEventCommandHandler
             return;
         }
 
+        $occurredAt = new DateTimeImmutable($command->occurredAt);
+
         $this->eventStoreRepository->append(
             IncomingEvent::create(
                 $command->eventId,
                 $command->type,
-                new DateTimeImmutable($command->occurredAt),
+                $occurredAt,
                 $command->data,
                 new DateTimeImmutable(),
             ),
         );
 
-        if ($command->type === 'episode.downloaded') {
+        if (EventType::tryFrom($command->type) === EventType::EpisodeDownloaded) {
             $this->eventBus->dispatch(
                 new EpisodeDownloadRecorded(
                     eventId: EventId::fromString($command->eventId),
                     episodeId: EpisodeId::fromString($command->data['episode_id']),
                     podcastId: PodcastId::fromString($command->data['podcast_id']),
-                    occurredAt: new DateTimeImmutable($command->occurredAt),
+                    occurredAt: $occurredAt,
                 ),
             );
         }

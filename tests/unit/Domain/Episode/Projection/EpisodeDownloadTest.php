@@ -8,11 +8,13 @@ use App\Domain\Episode\Projection\EpisodeDownload;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class EpisodeDownloadTest extends TestCase
 {
-    public function test_create_sets_all_properties(): void
+    #[Test]
+    public function create_sets_all_properties(): void
     {
         $episodeId  = EpisodeId::fromString('550e8400-e29b-41d4-a716-446655440000');
         $podcastId  = PodcastId::fromString('6ba7b810-9dad-11d1-80b4-00c04fd430c8');

@@ -12,6 +12,7 @@ use App\Shared\Domain\ValueObject\EventId;
 use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -26,7 +27,8 @@ final class EpisodeDownloadProjectorTest extends TestCase
         $this->projector = new EpisodeDownloadProjector($this->em);
     }
 
-    public function test_persists_and_flushes_episode_download_on_event(): void
+    #[Test]
+    public function persists_and_flushes_episode_download_on_event(): void
     {
         $event = new EpisodeDownloadRecorded(
             eventId:    EventId::fromString('550e8400-e29b-41d4-a716-446655440001'),

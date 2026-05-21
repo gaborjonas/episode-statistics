@@ -10,6 +10,7 @@ use App\Shared\Domain\ValueObject\EventId;
 use App\Shared\Domain\ValueObject\PodcastId;
 use App\Shared\Infrastructure\Bus\MessengerEventBusInterface;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -26,7 +27,8 @@ final class MessengerEventBusTest extends TestCase
         $this->eventBus   = new MessengerEventBusInterface($this->messageBus);
     }
 
-    public function test_delegates_dispatch_to_messenger_bus(): void
+    #[Test]
+    public function delegates_dispatch_to_messenger_bus(): void
     {
         $event = new EpisodeDownloadRecorded(
             eventId:    EventId::fromString('550e8400-e29b-41d4-a716-446655440001'),

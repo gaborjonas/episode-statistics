@@ -8,14 +8,14 @@ use DateTimeImmutable;
 
 final class IncomingEvent
 {
-    public string $id;
-    public string $type;
-    public DateTimeImmutable $occurredAt;
-    /**
-     * @var array<string,mixed> $data
-     */
-    public array $data;
-    public DateTimeImmutable $createdAt;
+    /** @var array<string,mixed> */
+    private(set) array $data;
+    private(set) string $id;
+    private(set) string $type;
+    private(set) DateTimeImmutable $occurredAt;
+    private(set) DateTimeImmutable $createdAt;
+
+    private function __construct() {}
 
     /**
      * @param array<string,mixed> $data
@@ -36,5 +36,4 @@ final class IncomingEvent
 
         return $event;
     }
-
 }
