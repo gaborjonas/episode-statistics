@@ -31,7 +31,7 @@ src/
 |-----------|-----------|
 | Runtime   | PHP 8.5 / Symfony 8 |
 | Database  | PostgreSQL 18 |
-| Message bus | Symfony Messenger (Doctrine transport) |
+| Message bus | Symfony Messenger + RabbitMQ (AMQP) |
 | Web server | Nginx + PHP-FPM |
 | Container | Docker Compose |
 

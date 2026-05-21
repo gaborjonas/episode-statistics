@@ -13,6 +13,7 @@ services:
       php-fpm:
         condition: service_healthy
     networks:
+      - web_network
       - app_network
 
   php-fpm:
@@ -20,6 +21,8 @@ services:
     restart: unless-stopped
     depends_on:
       postgres:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     build:
       context: .
@@ -34,6 +37,7 @@ services:
       retries: 3
       start_period: 10s
     networks:
+      - web_network
       - app_network
 
   worker:
@@ -41,6 +45,8 @@ services:
     restart: unless-stopped
     depends_on:
       php-fpm:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     build:
       context: .
@@ -72,6 +78,24 @@ services:
     networks:
       - app_network
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:4-management-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app_network
+
 networks:
+  web_network:
+    driver: bridge
   app_network:
     driver: bridge
