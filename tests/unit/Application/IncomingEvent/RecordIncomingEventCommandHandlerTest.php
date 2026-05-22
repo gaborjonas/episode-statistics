@@ -8,7 +8,6 @@ use App\Application\IncomingEvent\Command\RecordIncomingEventCommand;
 use App\Application\IncomingEvent\Command\RecordIncomingEventCommandHandler;
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\IncomingEvent\Enum\EventType;
-use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
 use App\Shared\Domain\Bus\EventBus;
 use PHPUnit\Framework\Attributes\Test;
@@ -54,11 +53,11 @@ final class RecordIncomingEventCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('append')
             ->with(
-                $this->callback(static function (IncomingEvent $event) use ($command): bool {
-                    return $event->id === $command->eventId
-                        && $event->type === $command->type
-                        && $event->data === $command->data;
-                }),
+                $command->eventId,
+                $command->type,
+                $this->anything(),
+                $command->data,
+                $this->anything(),
             );
         $this->eventBus->expects($this->once())->method('dispatch');
 

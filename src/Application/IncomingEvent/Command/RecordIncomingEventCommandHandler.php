@@ -6,7 +6,6 @@ namespace App\Application\IncomingEvent\Command;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\IncomingEvent\Enum\EventType;
-use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
 use App\Shared\Domain\Bus\EventBus;
 use App\Shared\Domain\ValueObject\EpisodeId;
@@ -37,13 +36,11 @@ final readonly class RecordIncomingEventCommandHandler
         $occurredAt = new DateTimeImmutable($command->occurredAt);
 
         $this->eventStoreRepository->append(
-            IncomingEvent::create(
-                $command->eventId,
-                $command->type,
-                $occurredAt,
-                $command->data,
-                new DateTimeImmutable(),
-            ),
+            $command->eventId,
+            $command->type,
+            $occurredAt,
+            $command->data,
+            new DateTimeImmutable(),
         );
 
         if (EventType::tryFrom($command->type) === EventType::EpisodeDownloaded) {

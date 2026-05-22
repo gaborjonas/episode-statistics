@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace App\Domain\IncomingEvent\Repository;
 
-use App\Domain\IncomingEvent\Projection\IncomingEvent;
+use DateTimeImmutable;
 
 interface IncomingEventRepositoryInterface
 {
     public function exists(string $id): bool;
 
-    public function append(IncomingEvent $event): void;
+    /** @param array<string,mixed> $data */
+    public function append(
+        string $id,
+        string $type,
+        DateTimeImmutable $occurredAt,
+        array $data,
+        DateTimeImmutable $createdAt,
+    ): void;
 }

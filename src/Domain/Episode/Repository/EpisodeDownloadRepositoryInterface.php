@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Episode\Repository;
 
-use App\Domain\Episode\Projection\EpisodeDownload;
 use App\Domain\Episode\ValueObject\DateRange;
+use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\PodcastId;
 

@@ -14,13 +14,13 @@ doctrine:
                 type: xml
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Infrastructure/Episode/Persistence/Doctrine/Mapping'
-                prefix: 'App\Domain\Episode\Projection'
+                prefix: 'App\Infrastructure\Episode\Persistence\Doctrine\Projection'
                 alias: Episode
             IncomingEvent:
                 type: xml
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Infrastructure/IncomingEvent/Persistence/Doctrine/Mapping'
-                prefix: 'App\Domain\IncomingEvent\Projection'
+                prefix: 'App\Infrastructure\IncomingEvent\Persistence\Doctrine\Projection'
                 alias: IncomingEvent
 
 

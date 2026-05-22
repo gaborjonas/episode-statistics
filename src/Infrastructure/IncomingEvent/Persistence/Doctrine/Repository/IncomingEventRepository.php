@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\IncomingEvent\Persistence\Doctrine\Repository;
 
-use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
-use Doctrine\DBAL\Exception;
+use App\Infrastructure\IncomingEvent\Persistence\Doctrine\Projection\IncomingEvent;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class IncomingEventRepository implements IncomingEventRepositoryInterface
@@ -15,18 +15,20 @@ final readonly class IncomingEventRepository implements IncomingEventRepositoryI
         private EntityManagerInterface $em
     ) {}
 
-    /** @throws Exception */
     public function exists(string $id): bool
     {
-        return (bool) $this->em->getConnection()->fetchOne(
-            'SELECT 1 FROM incoming_events WHERE id = :id',
-            ['id' => $id],
-        );
+        return $this->em->find(IncomingEvent::class, $id) !== null;
     }
 
-    public function append(IncomingEvent $event): void
-    {
-        $this->em->persist($event);
+    /** @param array<string,mixed> $data */
+    public function append(
+        string $id,
+        string $type,
+        DateTimeImmutable $occurredAt,
+        array $data,
+        DateTimeImmutable $createdAt,
+    ): void {
+        $this->em->persist(IncomingEvent::create($id, $type, $occurredAt, $data, $createdAt));
         $this->em->flush();
     }
 }

@@ -3,12 +3,10 @@ DOCKER_COMP = docker compose
 
 # Docker containers
 PHP_CONT = $(DOCKER_COMP) exec php-fpm
+PHP_WORKER_CONT = $(DOCKER_COMP) exec worker
 
 # Executables
 PHP      = $(PHP_CONT) php
-COMPOSER = $(PHP_CONT) composer
-SYMFONY  = $(PHP) bin/console
-
 # Misc
 .DEFAULT_GOAL = help
 .PHONY        : help build up start down logs
@@ -18,7 +16,9 @@ help: ## Outputs this help screen
 
 start: ## Start the docker hub in detached mode (no logs)
 	@$(DOCKER_COMP) up --build --detach
-	@$(SYMFONY) doctrine:migrations:migrate --no-interaction
+	@$(PHP_WORKER_CONT) php bin/console cache:clear
+	@$(PHP_CONT) php bin/console cache:clear
+	@$(PHP_CONT) php bin/console doctrine:migrations:migrate --no-interaction
 
 start-prod: ## Start the docker hub in detached mode (no logs)
 	@$(DOCKER_COMP) -f compose.yaml -f compose.prod.yaml up --build --detach

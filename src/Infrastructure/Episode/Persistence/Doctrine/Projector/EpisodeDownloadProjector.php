@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Episode\Persistence\Doctrine\Projector;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
-use App\Domain\Episode\Projection\EpisodeDownload;
 use App\Domain\Episode\Repository\EpisodeDownloadRepositoryInterface;
+use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

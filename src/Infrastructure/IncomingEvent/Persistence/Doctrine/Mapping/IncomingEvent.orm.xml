@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\IncomingEvent\Projection\IncomingEvent" table="incoming_events">
+    <entity name="App\Infrastructure\IncomingEvent\Persistence\Doctrine\Projection\IncomingEvent" table="incoming_events">
         <id name="id" type="guid" column="id" />
         <field name="type" type="string" column="type" />
         <field name="occurredAt" type="datetimetz_immutable" column="occurred_at"/>

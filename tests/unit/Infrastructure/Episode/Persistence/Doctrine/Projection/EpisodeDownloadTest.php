@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\unit\Domain\Episode\Projection;
+namespace App\Tests\unit\Infrastructure\Episode\Persistence\Doctrine\Projection;
 
-use App\Domain\Episode\Projection\EpisodeDownload;
+use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;

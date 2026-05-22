@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\unit\Infrastructure\Episode\Persistence\Doctrine\Projector;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
-use App\Domain\Episode\Projection\EpisodeDownload;
 use App\Domain\Episode\Repository\EpisodeDownloadRepositoryInterface;
+use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projector\EpisodeDownloadProjector;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\EventId;

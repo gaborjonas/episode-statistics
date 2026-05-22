@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\IncomingEvent\Projection;
+namespace App\Infrastructure\IncomingEvent\Persistence\Doctrine\Projection;
 
 use DateTimeImmutable;
 

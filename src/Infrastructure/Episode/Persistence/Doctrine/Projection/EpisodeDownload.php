@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Episode\Projection;
+namespace App\Infrastructure\Episode\Persistence\Doctrine\Projection;
 
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\PodcastId;

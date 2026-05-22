@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\Episode\Projection\EpisodeDownload" table="episode_downloads">
+    <entity name="App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload" table="episode_downloads">
         <indexes>
             <index name="idx_episode_downloads_lookup" columns="podcast_id,episode_id,occurred_at"/>
         </indexes>

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\unit\Domain\IncomingEvent\Projection;
+namespace App\Tests\unit\Infrastructure\IncomingEvent\Persistence\Doctrine\Projection;
 
-use App\Domain\IncomingEvent\Projection\IncomingEvent;
+use App\Infrastructure\IncomingEvent\Persistence\Doctrine\Projection\IncomingEvent;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
