@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Bus;
 
-use App\Shared\Domain\Bus\EventBusInterface;
+use App\Shared\Domain\Bus\EventBus;
 use App\Shared\Domain\Event\DomainEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final readonly class MessengerEventBusInterface implements EventBusInterface
+final readonly class MessengerEventBus implements EventBus
 {
     public function __construct(
         private MessageBusInterface $eventBus

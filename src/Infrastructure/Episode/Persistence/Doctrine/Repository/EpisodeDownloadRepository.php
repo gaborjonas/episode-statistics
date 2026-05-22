@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Episode\Persistence\Doctrine\Repository;
 
+use App\Domain\Episode\Projection\EpisodeDownload;
 use App\Domain\Episode\Repository\EpisodeDownloadRepositoryInterface;
 use App\Domain\Episode\ValueObject\DateRange;
 use App\Shared\Domain\ValueObject\EpisodeId;
@@ -16,6 +17,12 @@ final readonly class EpisodeDownloadRepository implements EpisodeDownloadReposit
     public function __construct(
         private EntityManagerInterface $em,
     ) {}
+
+    public function save(EpisodeDownload $episodeDownload): void
+    {
+        $this->em->persist($episodeDownload);
+        $this->em->flush();
+    }
 
     public function countByDate(PodcastId $podcastId, EpisodeId $episodeId, DateRange $dateRange): array
     {

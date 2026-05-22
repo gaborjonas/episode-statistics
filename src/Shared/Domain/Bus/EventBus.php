@@ -6,7 +6,7 @@ namespace App\Shared\Domain\Bus;
 
 use App\Shared\Domain\Event\DomainEvent;
 
-interface EventBusInterface
+interface EventBus
 {
     public function dispatch(DomainEvent $event): void;
 }

@@ -6,26 +6,24 @@ namespace App\Infrastructure\Episode\Persistence\Doctrine\Projector;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\Episode\Projection\EpisodeDownload;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Domain\Episode\Repository\EpisodeDownloadRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final readonly class EpisodeDownloadProjector
 {
     public function __construct(
-        private EntityManagerInterface $em,
+        private EpisodeDownloadRepositoryInterface $repository,
     ) {}
 
     public function __invoke(EpisodeDownloadRecorded $event): void
     {
-        $this->em->persist(
+        $this->repository->save(
             EpisodeDownload::create(
                 episodeId: $event->episodeId,
                 podcastId: $event->podcastId,
                 occurredAt: $event->occurredAt,
             ),
         );
-
-        $this->em->flush();
     }
 }

@@ -21,4 +21,4 @@ services:
         alias: App\Shared\Infrastructure\Bus\MessengerQueryBus
 
     App\Shared\Domain\Bus\EventBus:
-        alias: MessengerEventBusInterface
+        alias: App\Shared\Infrastructure\Bus\MessengerEventBus

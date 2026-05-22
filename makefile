@@ -18,6 +18,7 @@ help: ## Outputs this help screen
 
 start: ## Start the docker hub in detached mode (no logs)
 	@$(DOCKER_COMP) up --build --detach
+	@$(SYMFONY) doctrine:migrations:migrate --no-interaction
 
 start-prod: ## Start the docker hub in detached mode (no logs)
 	@$(DOCKER_COMP) -f compose.yaml -f compose.prod.yaml up --build --detach

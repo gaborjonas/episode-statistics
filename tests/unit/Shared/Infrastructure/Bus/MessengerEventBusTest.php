@@ -8,7 +8,7 @@ use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\EventId;
 use App\Shared\Domain\ValueObject\PodcastId;
-use App\Shared\Infrastructure\Bus\MessengerEventBusInterface;
+use App\Shared\Infrastructure\Bus\MessengerEventBus;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,12 +19,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class MessengerEventBusTest extends TestCase
 {
     private MessageBusInterface&MockObject $messageBus;
-    private MessengerEventBusInterface $eventBus;
+    private MessengerEventBus $eventBus;
 
     protected function setUp(): void
     {
         $this->messageBus = $this->createMock(MessageBusInterface::class);
-        $this->eventBus   = new MessengerEventBusInterface($this->messageBus);
+        $this->eventBus   = new MessengerEventBus($this->messageBus);
     }
 
     #[Test]

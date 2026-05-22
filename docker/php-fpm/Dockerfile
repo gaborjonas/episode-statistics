@@ -41,7 +41,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN chown devuser:devuser /var/www/html
 USER devuser
 
-ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
 
 FROM base AS builder

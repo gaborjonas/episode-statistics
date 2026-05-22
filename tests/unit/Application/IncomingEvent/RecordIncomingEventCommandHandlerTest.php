@@ -10,7 +10,7 @@ use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\IncomingEvent\Enum\EventType;
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
-use App\Shared\Domain\Bus\EventBusInterface;
+use App\Shared\Domain\Bus\EventBus;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -22,13 +22,13 @@ final class RecordIncomingEventCommandHandlerTest extends TestCase
     private const string PODCAST_ID = '550e8400-e29b-41d4-a716-446655440003';
 
     private IncomingEventRepositoryInterface&MockObject $repository;
-    private EventBusInterface&MockObject $eventBus;
+    private EventBus&MockObject $eventBus;
     private RecordIncomingEventCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IncomingEventRepositoryInterface::class);
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
         $this->handler = new RecordIncomingEventCommandHandler($this->repository, $this->eventBus);
     }
 

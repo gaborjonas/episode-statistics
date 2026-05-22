@@ -8,7 +8,7 @@ use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\IncomingEvent\Enum\EventType;
 use App\Domain\IncomingEvent\Projection\IncomingEvent;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
-use App\Shared\Domain\Bus\EventBusInterface;
+use App\Shared\Domain\Bus\EventBus;
 use App\Shared\Domain\ValueObject\EpisodeId;
 use App\Shared\Domain\ValueObject\EventId;
 use App\Shared\Domain\ValueObject\PodcastId;
@@ -21,7 +21,7 @@ final readonly class RecordIncomingEventCommandHandler
 {
     public function __construct(
         private IncomingEventRepositoryInterface $eventStoreRepository,
-        private EventBusInterface $eventBus,
+        private EventBus $eventBus,
     ) {}
 
     /**
