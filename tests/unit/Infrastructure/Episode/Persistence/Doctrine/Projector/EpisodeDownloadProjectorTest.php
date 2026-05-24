@@ -6,11 +6,11 @@ namespace App\Tests\unit\Infrastructure\Episode\Persistence\Doctrine\Projector;
 
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\Episode\Repository\EpisodeDownloadRepositoryInterface;
+use App\Domain\Shared\ValueObject\EpisodeId;
+use App\Domain\Shared\ValueObject\EventId;
+use App\Domain\Shared\ValueObject\PodcastId;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projector\EpisodeDownloadProjector;
-use App\Shared\Domain\ValueObject\EpisodeId;
-use App\Shared\Domain\ValueObject\EventId;
-use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;

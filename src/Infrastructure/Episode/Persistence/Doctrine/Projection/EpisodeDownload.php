@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Episode\Persistence\Doctrine\Projection;
 
-use App\Shared\Domain\ValueObject\EpisodeId;
-use App\Shared\Domain\ValueObject\PodcastId;
+use App\Domain\Shared\ValueObject\EpisodeId;
+use App\Domain\Shared\ValueObject\PodcastId;
 use DateTimeImmutable;
 
 final class EpisodeDownload

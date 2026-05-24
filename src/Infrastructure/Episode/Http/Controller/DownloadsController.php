@@ -6,10 +6,10 @@ namespace App\Infrastructure\Episode\Http\Controller;
 
 use App\Application\Episode\DTO\DownloadsResult;
 use App\Application\Episode\Query\GetDownloadsQuery\GetDownloadsQuery;
+use App\Domain\Shared\Bus\QueryBus;
+use App\Domain\Shared\ValueObject\EpisodeId;
+use App\Domain\Shared\ValueObject\PodcastId;
 use App\Infrastructure\Episode\Http\Request\DownloadsRequest;
-use App\Shared\Domain\Bus\QueryBus;
-use App\Shared\Domain\ValueObject\EpisodeId;
-use App\Shared\Domain\ValueObject\PodcastId;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;

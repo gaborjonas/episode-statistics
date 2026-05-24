@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Application\Infrastructure\IncomingEvent\Http\Controller;
 
 use App\Domain\IncomingEvent\Enum\EventType;
-use App\Shared\Domain\Bus\CommandBus;
+use App\Domain\Shared\Bus\CommandBus;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

@@ -10,8 +10,8 @@ The project follows **CQRS with a hexagonal (ports & adapters) layout** and thre
 src/
 ├── Domain/          # Pure domain objects — value objects, events, repository interfaces, exceptions
 ├── Application/     # Use-cases — commands, queries, handlers, DTOs
-└── Infrastructure/  # Framework-specific wiring — HTTP controllers, Doctrine projections, repositories, projectors
-    Shared/          # Cross-cutting primitives — bus interfaces, base value objects, exception listener
+├── Infrastructure/  # Framework-specific wiring — HTTP controllers, Doctrine projections, repositories, projectors
+└── Shared/          # Cross-cutting primitives — bus interfaces, base value objects, exception listener
 ```
 
 ### Key flows

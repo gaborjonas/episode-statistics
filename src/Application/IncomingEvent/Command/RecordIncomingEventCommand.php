@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\IncomingEvent\Command;
 
-use App\Shared\Domain\Bus\Command;
+use App\Domain\Shared\Bus\Command;
 
 final readonly class RecordIncomingEventCommand implements Command
 {

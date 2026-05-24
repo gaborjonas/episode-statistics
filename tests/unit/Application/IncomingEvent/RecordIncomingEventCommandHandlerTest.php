@@ -9,7 +9,7 @@ use App\Application\IncomingEvent\Command\RecordIncomingEventCommandHandler;
 use App\Domain\Episode\Event\EpisodeDownloadRecorded;
 use App\Domain\IncomingEvent\Enum\EventType;
 use App\Domain\IncomingEvent\Repository\IncomingEventRepositoryInterface;
-use App\Shared\Domain\Bus\EventBus;
+use App\Domain\Shared\Bus\EventBus;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

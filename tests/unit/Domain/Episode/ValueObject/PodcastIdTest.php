@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Domain\Episode\ValueObject;
 
-use App\Shared\Domain\Exception\InvalidPodcastIdException;
-use App\Shared\Domain\ValueObject\PodcastId;
+use App\Domain\Shared\Exception\InvalidPodcastIdException;
+use App\Domain\Shared\ValueObject\PodcastId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

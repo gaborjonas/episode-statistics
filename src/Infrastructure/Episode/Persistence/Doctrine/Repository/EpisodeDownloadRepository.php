@@ -6,9 +6,9 @@ namespace App\Infrastructure\Episode\Persistence\Doctrine\Repository;
 
 use App\Domain\Episode\Repository\EpisodeDownloadRepositoryInterface;
 use App\Domain\Episode\ValueObject\DateRange;
+use App\Domain\Shared\ValueObject\EpisodeId;
+use App\Domain\Shared\ValueObject\PodcastId;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
-use App\Shared\Domain\ValueObject\EpisodeId;
-use App\Shared\Domain\ValueObject\PodcastId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 

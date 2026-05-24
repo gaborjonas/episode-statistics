@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Application\Infrastructure\Episode\Http\Controller;
 
 use App\Application\Episode\DTO\DownloadsResult;
-use App\Shared\Domain\Bus\QueryBus;
+use App\Domain\Shared\Bus\QueryBus;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

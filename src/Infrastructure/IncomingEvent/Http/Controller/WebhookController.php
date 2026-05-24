@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\IncomingEvent\Http\Controller;
 
 use App\Application\IncomingEvent\Command\RecordIncomingEventCommand;
+use App\Domain\Shared\Bus\CommandBus;
 use App\Infrastructure\IncomingEvent\Http\Request\WebHookRequest;
-use App\Shared\Domain\Bus\CommandBus;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

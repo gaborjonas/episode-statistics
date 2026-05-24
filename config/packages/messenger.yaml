@@ -14,6 +14,6 @@ framework:
             sync: 'sync://'
 
         routing:
-            App\Shared\Domain\Bus\Query: sync
-            App\Shared\Domain\Bus\Command: async
-            App\Shared\Domain\Event\DomainEvent: async
+            App\Domain\Shared\Bus\Query: sync
+            App\Domain\Shared\Bus\Command: async
+            App\Domain\Shared\Event\DomainEvent: async

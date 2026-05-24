@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Episode\Repository;
 
 use App\Domain\Episode\ValueObject\DateRange;
+use App\Domain\Shared\ValueObject\EpisodeId;
+use App\Domain\Shared\ValueObject\PodcastId;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
-use App\Shared\Domain\ValueObject\EpisodeId;
-use App\Shared\Domain\ValueObject\PodcastId;
 
 interface EpisodeDownloadRepositoryInterface
 {

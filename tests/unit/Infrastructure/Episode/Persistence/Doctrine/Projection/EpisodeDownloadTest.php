@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Infrastructure\Episode\Persistence\Doctrine\Projection;
 
+use App\Domain\Shared\ValueObject\EpisodeId;
+use App\Domain\Shared\ValueObject\PodcastId;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
-use App\Shared\Domain\ValueObject\EpisodeId;
-use App\Shared\Domain\ValueObject\PodcastId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

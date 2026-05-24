@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Episode\Exception;
 
-use App\Shared\Domain\Exception\DomainException;
+use App\Domain\Shared\Exception\DomainException;
 
 final class InvalidDateRangeException extends DomainException
 {
