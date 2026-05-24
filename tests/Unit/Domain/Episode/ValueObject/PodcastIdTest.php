@@ -1,0 +1,65 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\Unit\Domain\Episode\ValueObject;
+
+use App\Domain\Shared\Exception\InvalidPodcastIdException;
+use App\Domain\Shared\ValueObject\PodcastId;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+
+final class PodcastIdTest extends TestCase
+{
+    private const string VALID_UUID = '550e8400-e29b-41d4-a716-446655440000';
+
+    #[Test]
+    public function creates_valid_uuid(): void
+    {
+        $id = new PodcastId('550e8400-e29b-41d4-a716-446655440000');
+
+        $this->assertSame('550e8400-e29b-41d4-a716-446655440000', $id->toString());
+    }
+
+    #[Test]
+    public function throws_on_invalid_string(): void
+    {
+        $this->expectException(InvalidPodcastIdException::class);
+
+        new PodcastId('not-a-uuid');
+    }
+
+    #[Test]
+    public function throws_on_empty_string(): void
+    {
+        $this->expectException(InvalidPodcastIdException::class);
+
+        new PodcastId('');
+    }
+
+    #[Test]
+    public function equals_returns_true_for_same_value(): void
+    {
+        $a = new PodcastId(self::VALID_UUID);
+        $b = new PodcastId(self::VALID_UUID);
+
+        $this->assertTrue($a->equals($b));
+    }
+
+    #[Test]
+    public function equals_returns_false_for_different_value(): void
+    {
+        $a = new PodcastId(self::VALID_UUID);
+        $b = new PodcastId('6ba7b810-9dad-11d1-80b4-00c04fd430c8');
+
+        $this->assertFalse($a->equals($b));
+    }
+
+    #[Test]
+    public function from_string_named_constructor(): void
+    {
+        $id = PodcastId::fromString(self::VALID_UUID);
+
+        $this->assertSame(self::VALID_UUID, $id->toString());
+    }
+}
