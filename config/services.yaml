@@ -13,12 +13,3 @@ services:
 
     App\:
         resource: '../src/'
-
-    App\Shared\Domain\Bus\CommandBus:
-        alias: App\Shared\Infrastructure\Bus\MessengerCommandBus
-
-    App\Shared\Domain\Bus\QueryBus:
-        alias: App\Shared\Infrastructure\Bus\MessengerQueryBus
-
-    App\Shared\Domain\Bus\EventBus:
-        alias: App\Shared\Infrastructure\Bus\MessengerEventBus

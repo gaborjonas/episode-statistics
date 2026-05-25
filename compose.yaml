@@ -1,86 +1,77 @@
+name: backend-statistics
+
 services:
   nginx:
-    container_name: 'nginx'
     image: nginx:1.30-alpine
-    restart: unless-stopped
-    volumes:
-      - '.:/var/www/html:ro'
-      - './docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
-      - './docker/nginx/conf.d:/etc/nginx/conf.d:ro'
-    ports:
-      - '80:80'
+    container_name: 'nginx'
     depends_on:
       php-fpm:
         condition: service_healthy
+    volumes:
+      - .:/var/www/html:ro
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - '80:80'
     networks:
       - web_network
       - app_network
+    restart: unless-stopped
 
   php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+      target: dev
     container_name: 'php-fpm'
-    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-    build:
-      context: .
-      dockerfile: ./docker/php-fpm/Dockerfile
-      target: dev
     volumes:
-      - '.:/var/www/html'
+      - .:/var/www/html
+    networks:
+      - web_network
+      - app_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "php-fpm -t || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 10s
-    networks:
-      - web_network
-      - app_network
-
-  worker:
-    container_name: worker
-    restart: unless-stopped
-    depends_on:
-      php-fpm:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    build:
-      context: .
-      dockerfile: ./docker/php-fpm/Dockerfile
-      target: dev
-    volumes:
-      - '.:/var/www/html'
-    entrypoint: []
-    command: [ "php", "bin/console", "messenger:consume", "async", "--time-limit=3600", "-vv" ]
-    networks:
-      - app_network
 
   postgres:
-    container_name: postgres
     image: postgres:18.4
+    container_name: postgres
+    volumes:
+      - ./docker/data/postgresql:/var/lib/postgresql:rw
     environment:
       POSTGRES_DB: app
       POSTGRES_PASSWORD: password
       POSTGRES_USER: user
+    ports:
+      - '5432:5432'
+    networks:
+      - app_network
+    restart: unless-stopped
     healthcheck:
       test: [ "CMD", "pg_isready", "-d", "app", "-U", "user" ]
       timeout: 5s
       retries: 5
       start_period: 60s
-    volumes:
-      - ./docker/data/postgresql:/var/lib/postgresql:rw
-    ports:
-      - "5432:5432"
-    networks:
-      - app_network
 
   rabbitmq:
-    container_name: rabbitmq
     image: rabbitmq:4-management-alpine
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - app_network
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
@@ -88,11 +79,27 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+
+  worker:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+      target: dev
+    container_name: worker
+    depends_on:
+      php-fpm:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/var/www/html
     networks:
       - app_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: [ "php", "bin/console", "messenger:consume", "async", "--time-limit=3600", "-vv" ]
+    entrypoint: []
+    restart: unless-stopped
 
 networks:
   web_network:
