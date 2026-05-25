@@ -45,7 +45,7 @@ final readonly class WebhookController
             ),
         ),
         responses: [
-            new OA\Response(response: 200, description: 'IncomingEvent acknowledged'),
+            new OA\Response(response: 202, description: 'IncomingEvent acknowledged'),
             new OA\Response(response: 422, description: 'Invalid event data'),
         ],
     )]
