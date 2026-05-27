@@ -10,7 +10,6 @@ use App\Domain\Shared\ValueObject\EpisodeId;
 use App\Domain\Shared\ValueObject\PodcastId;
 use App\Infrastructure\Episode\Persistence\Doctrine\Projection\EpisodeDownload;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 final readonly class EpisodeDownloadRepository implements EpisodeDownloadRepositoryInterface
 {
@@ -26,26 +25,27 @@ final readonly class EpisodeDownloadRepository implements EpisodeDownloadReposit
 
     public function countByDate(PodcastId $podcastId, EpisodeId $episodeId, DateRange $dateRange): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('date', 'date');
-        $rsm->addScalarResult('count', 'count', 'integer');
-
-        $rows = $this->em->createNativeQuery(
-            'SELECT DATE(occurred_at) AS date, COUNT(*)::int AS count
+        $sql = 'SELECT DATE(occurred_at) AS date, COUNT(*)::int AS count
              FROM episode_downloads
              WHERE podcast_id  = :podcastId
                AND episode_id  = :episodeId
                AND occurred_at >= :from
                AND occurred_at  < :toExclusive
              GROUP BY DATE(occurred_at)
-             ORDER BY date ASC',
-            $rsm,
-        )->setParameters([
-            'podcastId'   => $podcastId->toString(),
-            'episodeId'   => $episodeId->toString(),
-            'from'        => $dateRange->from->format('Y-m-d'),
-            'toExclusive' => $dateRange->to->modify('+1 day')->format('Y-m-d'),
-        ])->getArrayResult();
+             ORDER BY date ASC';
+
+        $rows = $this->em
+            ->getConnection()
+            ->executeQuery(
+                sql: $sql,
+                params: [
+                    'podcastId'   => $podcastId->toString(),
+                    'episodeId'   => $episodeId->toString(),
+                    'from'        => $dateRange->from->format('Y-m-d'),
+                    'toExclusive' => $dateRange->to->modify('+1 day')->format('Y-m-d'),
+                ]
+            )
+            ->fetchAllAssociative();
 
         return array_column($rows, 'count', 'date');
     }
