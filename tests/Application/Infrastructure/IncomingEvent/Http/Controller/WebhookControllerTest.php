@@ -57,7 +57,7 @@ final class WebhookControllerTest extends WebTestCase
         $body = json_decode($this->payload(), true);
         unset($body['event_id']);
 
-        $this->post(json_encode($body));
+        $this->post(json_encode($body, JSON_THROW_ON_ERROR));
 
         $this->assertResponseStatusCodeSame(422);
     }
@@ -80,7 +80,7 @@ final class WebhookControllerTest extends WebTestCase
         $body = json_decode($this->payload(), true);
         unset($body['occurred_at']);
 
-        $this->post(json_encode($body));
+        $this->post(json_encode($body, JSON_THROW_ON_ERROR));
 
         $this->assertResponseStatusCodeSame(422);
     }
@@ -103,7 +103,7 @@ final class WebhookControllerTest extends WebTestCase
         $body = json_decode($this->payload(), true);
         unset($body['type']);
 
-        $this->post(json_encode($body));
+        $this->post(json_encode($body, JSON_THROW_ON_ERROR));
 
         $this->assertResponseStatusCodeSame(422);
     }
@@ -138,7 +138,7 @@ final class WebhookControllerTest extends WebTestCase
                 'episode_id' => self::EPISODE_ID,
                 'podcast_id' => self::PODCAST_ID,
             ],
-        ], $overrides));
+        ], $overrides), JSON_THROW_ON_ERROR);
     }
 
     /**
