@@ -28,6 +28,9 @@ jobs:
             - name: Install dependencies
               run: composer install --prefer-dist --no-interaction --no-progress
 
+            - name: Security Audit
+              run: composer audit --no-dev --abandoned=report
+
             - name: Coding Standards
               run: composer lint:check
 
@@ -94,18 +97,3 @@ jobs:
 
             -   name: Dependency Review
                 uses: actions/dependency-review-action@v4
-
-    audit:
-        name: Composer Audit
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v6
-
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.5'
-                    tools: composer
-
-            -   name: Security Audit
-                run: composer audit --no-dev --abandoned=report
