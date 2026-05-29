@@ -39,3 +39,73 @@ jobs:
 
             - name: Mutation Tests
               run: composer mutation
+
+    doctrine-schema:
+        name: Doctrine schema validation
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:18
+                env:
+                    POSTGRES_USER: user
+                    POSTGRES_PASSWORD: password
+                    POSTGRES_DB: app
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432:5432
+        env:
+            DATABASE_URL: postgresql://user:password@127.0.0.1:5432/app?serverVersion=18&charset=utf8
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.5'
+                  extensions: bcmath, uuid, amqp, pdo_pgsql
+                  tools: composer
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v5
+              with:
+                  path: vendor
+                  key: composer-${{ hashFiles('composer.lock') }}
+                  restore-keys: composer-
+
+            - name: Install dependencies
+              run: composer install --prefer-dist --no-interaction --no-progress
+
+            - name: Run migrations
+              run: php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+
+            - name: Validate schema
+              run: php bin/console doctrine:schema:validate
+
+    dependency-review:
+        name: Dependency Review
+        runs-on: ubuntu-latest
+        if: github.event_name == 'pull_request'
+        steps:
+            -   uses: actions/checkout@v6
+
+            -   name: Dependency Review
+                uses: actions/dependency-review-action@v4
+
+    audit:
+        name: Composer Audit
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v6
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.5'
+                    tools: composer
+
+            -   name: Security Audit
+                run: composer audit --no-dev --abandoned=report
